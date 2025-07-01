@@ -74,3 +74,32 @@ apt-get install -y terraform
 echo "### Terraform installation complete. Version:"
 terraform --version
 
+#############################################################Few commands to run later###############################################
+    1  clear
+    2  git clone https://github.com/iam-veeramalla/ultimate-devops-project-demo.git
+    3  ls
+    4  cd ultimate-devops-project-demo/
+    5  ls
+    6  ls -ltr
+    7  docker compose up -y
+    8  clear
+    9  df -h
+   10  lsblk
+   11  apt install cloud guest-utils
+   12  apt install cloud-guest-utils
+   13  clear
+   14  df -h
+   15  sudo growpart /dev/xvda 1
+   16  df -h
+   17  lsblk
+   18  sudo growpart /dev/xvda 1
+   19  lsblk
+   20  df -h
+   21  sudo ressize2fs /dev/xvda1
+   22  sudo resize2fs /dev/xvda1
+   23  df -h
+   24  clear
+   25  docker compose up -y
+   26  clear
+   27  docker compose up -d
+   28  history
