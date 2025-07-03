@@ -1,5 +1,5 @@
 pipeline {
-    agent any{}
+    agent any
     tools {
         maven "MAVEN3.9"
         jdk "JDK17"
@@ -10,13 +10,6 @@ pipeline {
         {
             steps {
                 git branch: 'atom', url: 'https://github.com/hkhcoder/vprofile-project.git'
-            }
-
-        }
-        stage('unit Test')
-        {
-            steps {
-                sh 'mvn test'
             }
 
         }
@@ -32,6 +25,20 @@ pipeline {
 
                 }
 
+            }
+
+        }
+        stage('unit Test')
+        {
+            steps {
+                sh 'mvn test'
+            }
+
+        }
+        stage('Checkstyle Analysis')
+        {
+            steps {
+                sh 'mvn checkstyle:checkstyle'
             }
 
         }
