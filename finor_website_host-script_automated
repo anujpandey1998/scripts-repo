@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Install Apache, wget, unzip, git if not already installed
+echo "Installing required packages..."
+yum install -y httpd wget unzip git
+
+# Start and enable Apache if not already running
+if ! systemctl is-active --quiet httpd; then
+    echo "Starting Apache..."
+    systemctl start httpd
+fi
+
+if ! systemctl is-enabled --quiet httpd; then
+    echo "Enabling Apache to run on boot..."
+    systemctl enable httpd
+fi
+
+# Create a working directory if not exists
+WORKDIR="/tmp/vivek_website"
+REPO_URL="https://github.com/viveksingh2511/edreamztask.git"
+CLONED_DIR="${WORKDIR}/edreamztask"
+
+if [ ! -d "$WORKDIR" ]; then
+    mkdir "$WORKDIR"
+fi
+
+cd "$WORKDIR"
+
+# Clone repo only if it doesn't exist
+if [ ! -d "$CLONED_DIR" ]; then
+    echo "Cloning repository..."
+    git clone "$REPO_URL"
+else
+    echo "Repository already cloned, pulling latest changes..."
+    cd "$CLONED_DIR"
+    git pull origin main || git pull origin master
+    cd ..
+fi
+
+# Clean existing web root if not empty
+if [ "$(ls -A /var/www/html)" ]; then
+    echo "Cleaning existing files in /var/www/html..."
+    rm -rf /var/www/html/*
+fi
+
+# Copy site content to Apache web root
+echo "Copying website content..."
+cp -r "$CLONED_DIR"/* /var/www/html/
+
+# Restart Apache to serve updated content
+echo "Restarting Apache..."
+systemctl restart httpd
+
+echo "Website deployed successfully!"
